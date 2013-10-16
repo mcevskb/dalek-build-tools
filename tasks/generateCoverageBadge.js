@@ -5,8 +5,9 @@ module.exports = function(grunt) {
   // generates a coverage badge
   grunt.registerTask('generateCoverageBadge', function () {
     var fs = require('fs');
-    if (fs.existsSync(__dirname + '/node_modules/coverage-badge')) {
-      if (fs.existsSync(__dirname + '/report/coverage/coverage.json')) {
+    var cwd = process.cwd();
+    if (fs.existsSync(cwd + '/node_modules/coverage-badge')) {
+      if (fs.existsSync(cwd + '/report/coverage/coverage.json')) {
         var green = [147,188,59];
         var yellow = [166,157,0];
         var red = [189,0,2];
@@ -35,7 +36,7 @@ module.exports = function(grunt) {
           return 'rgba('+values[0]+','+values[1]+','+values[2]+',1)';
         };
 
-        var Badge = require(__dirname + '/node_modules/coverage-badge/lib/Badge.js');
+        var Badge = require(cwd + '/node_modules/coverage-badge/lib/Badge.js');
         var badgeFn = function(coverage) {
           coverage = Math.floor(Number(coverage));
           var badge = new Badge({
@@ -53,8 +54,8 @@ module.exports = function(grunt) {
           return badge.stream();
         };
 
-        var coverage = JSON.parse(fs.readFileSync(__dirname + '/report/coverage/coverage.json')).coverage;
-        var file = fs.createWriteStream(__dirname + '/report/coverage/coverage.png');
+        var coverage = JSON.parse(fs.readFileSync(cwd + '/report/coverage/coverage.json')).coverage;
+        var file = fs.createWriteStream(cwd + '/report/coverage/coverage.png');
         badgeFn(coverage).pipe(file);
       }
     }
