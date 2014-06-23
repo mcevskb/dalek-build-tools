@@ -1,3 +1,5 @@
+_ = require('lodash');
+
 /* jshint camelcase: false */
 module.exports = function(grunt) {
   'use strict';
@@ -6,7 +8,7 @@ module.exports = function(grunt) {
   grunt.registerTask('release-canary', function () {
     var done = this.async();
     var pkg = grunt.config.get('pkg');
-    var canaryPkg = grunt.util._.clone(pkg);
+    var canaryPkg = _.clone(pkg, true);
     var options = this.options();
     var cwd = process.cwd();
     var fileContents = {};
@@ -22,7 +24,7 @@ module.exports = function(grunt) {
     canaryPkg.version = canaryPkg.version + '-' + grunt.template.today('yyyy-mm-dd-HH-MM-ss');
     grunt.file.write('package.json', JSON.stringify(canaryPkg, true, 2));
 
-    // iterate over the given aray of files to edit
+    // iterate over the given array of files to edit
     options.files.forEach(function (file, idx){
       fileContents[idx] = {old: grunt.file.read(file), canary: grunt.file.read(file)};
       Object.keys(pkg.dependencies).forEach(function (pack) {
